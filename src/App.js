@@ -37,17 +37,19 @@ class AllPosts extends Component {
 	render() {
 		return (
 			<div>
-				<div>
+				<div class='postform'>
+					<p>Make a new post:</p>
 					<form onSubmit={this.handleSubmit}>
 						<label>
-							Make a new post
 							<input type="text" value={this.state.value} onChange={this.handleChange}/>
 						</label>
 						<input type="submit" value="Submit"/>
 					</form>
 				</div>
-				<div>
-					{this.state.posts.map(post => this.getPost(post))}
+				<div class='posttable'>
+					<table>
+						{this.state.posts.map(post => <tr>{post}</tr>)}
+					</table>
 				</div>
 			</div>
 		);

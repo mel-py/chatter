@@ -1,9 +1,21 @@
-h1 {
-	font: 20px "Century Gothic", Futura, sans-serif;
-	margin: 20px;
+body {
+	background-color: lightblue;
 }
 
-p {
-	font: 14px "Century Gothic", Futura, sans-serif;
-	margin: 10px;
+h1 {
+	font: 30px "Century Gothic", Futura, sans-serif;
+	margin: 20px;
+	text-align: center
+}
+
+table, th, td {
+
+}
+
+.postform {
+	text-align: center;
+}
+
+table {
+	margin: 0px auto;
 }
