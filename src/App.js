@@ -6,7 +6,7 @@ function Post(props) {
 			<p>{props.value}</p>
 		</div>
 	);
-}
+}	
 
 class AllPosts extends Component {
 	constructor(props) {
@@ -15,6 +15,23 @@ class AllPosts extends Component {
 			posts: Array(),
 			value: ''
 		};
+		
+		/*var requestURL = 'https://mel-py.github.io/data.json';
+		var request = new XMLHttpRequest();
+		request.open('GET', requestURL);
+		request.responseType = 'json';
+		request.send();
+		request.onload = function() {
+			callback(request.response);
+		}*/
+	
+		fetch('https://mel-py.github.io/data.json').then(response => {
+			return response.json();
+		}).then(data => {
+			this.setState({posts: data['posts']});
+		}).catch(err => {
+			console.log('Got an error');
+		});
 		
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -37,7 +54,7 @@ class AllPosts extends Component {
 	render() {
 		return (
 			<div>
-				<div class='postform'>
+				<div className='postform'>
 					<p>Make a new post:</p>
 					<form onSubmit={this.handleSubmit}>
 						<label>
@@ -46,7 +63,7 @@ class AllPosts extends Component {
 						<input type="submit" value="Submit"/>
 					</form>
 				</div>
-				<div class='posttable'>
+				<div className='posttable'>
 					<table>
 						{this.state.posts.map(post => <tr>{post}</tr>)}
 					</table>
