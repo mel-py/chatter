@@ -16,22 +16,25 @@ class AllPosts extends Component {
 			value: ''
 		};
 		
-		/*var requestURL = 'https://mel-py.github.io/data.json';
 		var request = new XMLHttpRequest();
-		request.open('GET', requestURL);
+		//request.open('GET', 'https://localhost:5000/chatter/api/v1.0/posts')
+		
+		var requestURL = 'http://localhost:5000/chatter/api/v1.0/posts';
+		var request = new XMLHttpRequest();
+		request.open('GET', requestURL, true);
 		request.responseType = 'json';
 		request.send();
 		request.onload = function() {
-			callback(request.response);
-		}*/
-	
-		fetch('https://mel-py.github.io/data.json').then(response => {
-			return response.json();
-		}).then(data => {
-			this.setState({posts: data['posts']});
-		}).catch(err => {
-			console.log('Got an error');
-		});
+			//callback(request.response);
+			//console.log(request.response);
+			var response = request.response;
+			var data = []
+			var i;
+			for (i = 0; i < response['posts'].length; i++) {
+				data.unshift(response['posts'][i]['body'])
+			}
+			//this.setState({posts: data});
+		}
 		
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
