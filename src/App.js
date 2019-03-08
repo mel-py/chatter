@@ -8,6 +8,16 @@ function Post(props) {
 	);
 }	
 
+function loadData(src) {
+		fetch('https://localhost:5000/chatter/api/v1.0/posts').then(response => {
+			return response.json();
+		}).then(data => {
+			this.setState({posts: data['posts']});
+		}).catch(err => {
+			console.log('Got an error');
+		});
+}
+
 class AllPosts extends Component {
 	constructor(props) {
 		super(props);
@@ -16,25 +26,19 @@ class AllPosts extends Component {
 			value: ''
 		};
 		
-		var request = new XMLHttpRequest();
-		//request.open('GET', 'https://localhost:5000/chatter/api/v1.0/posts')
-		
-		var requestURL = 'http://localhost:5000/chatter/api/v1.0/posts';
-		var request = new XMLHttpRequest();
-		request.open('GET', requestURL, true);
-		request.responseType = 'json';
-		request.send();
-		request.onload = function() {
-			//callback(request.response);
-			//console.log(request.response);
-			var response = request.response;
-			var data = []
+		fetch('http://localhost:5000/chatter/api/v1.0/posts').then(response => {
+			return response.json();
+		}).then(data => {
+			var postBodies = [];
 			var i;
-			for (i = 0; i < response['posts'].length; i++) {
-				data.unshift(response['posts'][i]['body'])
+			for (i = 0; i < data['posts'].length; i++) {
+				postBodies.unshift(data['posts'][i]['body']);
 			}
-			//this.setState({posts: data});
-		}
+			console.log(postBodies);
+			this.setState({posts: postBodies});
+		}).catch(err => {
+			console.log('Got an error');
+		});
 		
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -80,7 +84,7 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <h1>Hello, React!</h1>
+                <h1>Welcome to Chatter</h1>
 				<div className="Post">
 					<AllPosts />
 				</div>
