@@ -53,6 +53,13 @@ class AllPosts extends Component {
 	}
 	
 	handleSubmit(event) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", "http://localhost:5000/chatter/api/v1.0/posts", true);
+		xhttp.setRequestHeader('Content-Type', 'application/json');
+		var input = JSON.stringify({
+			"body" : this.state.value
+		});
+		xhttp.send(input);
 		this.state.posts.unshift(this.state.value);
 		this.setState({value: ''});
 		event.preventDefault();
