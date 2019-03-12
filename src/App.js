@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
+import './index.css'
 
 function Post(props) {
 	return (
-		<div>
+		<div className>
 			<p>{props.value}</p>
 		</div>
 	);
@@ -77,10 +78,8 @@ class AllPosts extends Component {
 						<input type="submit" value="Submit"/>
 					</form>
 				</div>
-				<div className='posttable'>
-					<table>
-						{this.state.posts.map(post => <tr>{post}</tr>)}
-					</table>
+				<div>
+					{this.state.posts.map(post => <div className="post">{post}</div>)}
 				</div>
 			</div>
 		);
@@ -92,7 +91,7 @@ class App extends Component {
         return (
             <div className="App">
                 <h1>Welcome to Chatter</h1>
-				<div className="Post">
+				<div>
 					<AllPosts />
 				</div>
             </div>
