@@ -18,6 +18,13 @@ h1 {
 .postform {
 	text-align: center;
 }
+.btn {
+	border: none;
+	background-color: inherit;
+	padding: 10;
+	cursor: pointer;
+	display: inline-block;
+}
 
 table {
 	margin: 0px auto;

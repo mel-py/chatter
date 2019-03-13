@@ -9,16 +9,6 @@ function Post(props) {
 	);
 }	
 
-function loadData(src) {
-		fetch('https://localhost:5000/chatter/api/v1.0/posts').then(response => {
-			return response.json();
-		}).then(data => {
-			this.setState({posts: data['posts']});
-		}).catch(err => {
-			console.log('Got an error');
-		});
-}
-
 class AllPosts extends Component {
 	constructor(props) {
 		super(props);
@@ -66,6 +56,10 @@ class AllPosts extends Component {
 		event.preventDefault();
 	}
 	
+	handleClick(message) {
+		console.log(message);
+	}
+	
 	render() {
 		return (
 			<div>
@@ -79,7 +73,14 @@ class AllPosts extends Component {
 					</form>
 				</div>
 				<div>
-					{this.state.posts.map(post => <div className="post">{post}</div>)}
+					{this.state.posts.map(post => 
+					<div className="post">{post}
+						<div>
+							<button className="btn" onClick={()=>this.handleClick("Like")}>Like</button>
+							<button className="btn" onClick={()=>this.handleClick("Dislike")}>Dislike</button>
+							<button className="btn" onClick={()=>this.handleClick("Comments")}>Comments</button>
+						</div>
+					</div>)}
 				</div>
 			</div>
 		);
