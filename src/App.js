@@ -9,6 +9,12 @@ function Post(props) {
 	);
 }	
 
+function PostInfo (body, likes, dislikes) {
+	this.body = body;
+	this.likes = likes;
+	this.dislikes = dislikes;
+}
+
 class AllPosts extends Component {
 	constructor(props) {
 		super(props);
@@ -20,13 +26,16 @@ class AllPosts extends Component {
 		fetch('http://localhost:5000/chatter/api/v1.0/posts').then(response => {
 			return response.json();
 		}).then(data => {
-			var postBodies = [];
+			console.log(data);
+			var loadedPosts = [];
 			var i;
 			for (i = 0; i < data['posts'].length; i++) {
-				postBodies.unshift(data['posts'][i]['body']);
+				var newPost = new PostInfo(data['posts'][i]['body'], data['posts'][i]['likes'], data['posts'][i]['dislikes']);
+				console.log(newPost);
+				loadedPosts.unshift(newPost);
 			}
-			console.log(postBodies);
-			this.setState({posts: postBodies});
+			console.log(loadedPosts);
+			this.setState({posts: loadedPosts});
 		}).catch(err => {
 			console.log('Got an error');
 		});
@@ -74,10 +83,10 @@ class AllPosts extends Component {
 				</div>
 				<div>
 					{this.state.posts.map(post => 
-					<div className="post">{post}
+					<div className="post">{post.body}
 						<div>
-							<button className="btn" onClick={()=>this.handleClick("Like")}>Like</button>
-							<button className="btn" onClick={()=>this.handleClick("Dislike")}>Dislike</button>
+							<button className="btn" onClick={()=>this.handleClick("Like")}>Like ({post.likes})</button>
+							<button className="btn" onClick={()=>this.handleClick("Dislike")}>Dislike ({post.dislikes})</button>
 							<button className="btn" onClick={()=>this.handleClick("Comments")}>Comments</button>
 						</div>
 					</div>)}

@@ -59,6 +59,8 @@ def create_post():
 		abort(400)
 	post={
 		"id": posts[-1]['id'] + 1,
+		"likes": 0,
+		"dislikes": 0,
 		"body": request.json['body']
 	}
 	posts.append(post)
@@ -79,13 +81,15 @@ def delete_post(post_id):
 #TODO: Make table better (needs keys and stuff)
 def load_data():
 	c = conn.cursor()
-	c.execute("SELECT * FROM posts;");
+	c.execute("SELECT * FROM posts");
 	
 	row = c.fetchone()
 	while row is not None:
 		post = {
 			"id": row[0],
-			"body": row[1]
+			"body": row[1],
+			"likes": row[2],
+			"dislikes": row[2]
 		}
 		posts.append(post)
 		row = c.fetchone()
@@ -93,6 +97,7 @@ def load_data():
 if __name__ == '__main__':
 	conn = create_connection("C:\Programming\chatter\chatter_db.sqlite")
 	load_data()
+	c = conn.cursor()
 	conn.commit()
 	conn.close()
 	
