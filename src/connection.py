@@ -46,6 +46,16 @@ def after_request(response):
 def get_posts():
 	return jsonify({'posts': posts})
 	
+@app.route('/chatter/api/v1.0/posts/<int:post_id>', methods=['PUT'])
+def update_post(post_id):
+	post = [post for post in posts if post['id'] == post_id]
+	post[0]['likes'] = request.json.get('likes', post[0]['likes'])
+	post[0]['dislikes'] = request.json.get('dislikes', post[0]['dislikes'])
+	query = 'UPDATE posts SET likes = ' + str(post[0]['likes']) + ', dislikes = ' + str(post[0]['dislikes']) + ' WHERE id = ' + str(post[0]['id']) + ';'
+	print(query)
+	execute_query(query)
+	return jsonify({'post':post[0]})
+	
 @app.route('/chatter/api/v1.0/posts/<int:post_id>', methods=['GET'])
 def get_post(post_id):
 	post = [post for post in posts if post['id'] == post_id]

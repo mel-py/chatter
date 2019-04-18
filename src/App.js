@@ -71,7 +71,18 @@ class AllPosts extends Component {
 		} else if (message === "Dislike") {
 			nPosts[i].dislikes++;
 		}
-		this.setState({nPosts})
+		this.setState({nPosts});
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("PUT", "http://localhost:5000/chatter/api/v1.0/posts/"+postId, true);
+		xhttp.setRequestHeader('Content-Type', 'application/json');
+		var input = JSON.stringify({
+			"id" : this.state.posts[i].id,
+			"body" : this.state.posts[i].body,
+			"likes" : this.state.posts[i].likes,
+			"dislikes" : this.state.posts[i].dislikes,
+		});
+		console.log(input);
+		xhttp.send(input);
 	}
 	
 	render() {
