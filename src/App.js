@@ -7,12 +7,6 @@ function Post(props) {
 			<p>{props.value}</p>
 		</div>
 	);
-}	
-
-function PostInfo (body, likes, dislikes) {
-	this.body = body;
-	this.likes = likes;
-	this.dislikes = dislikes;
 }
 
 class AllPosts extends Component {
@@ -30,9 +24,8 @@ class AllPosts extends Component {
 			var loadedPosts = [];
 			var i;
 			for (i = 0; i < data['posts'].length; i++) {
-				var newPost = new PostInfo(data['posts'][i]['body'], data['posts'][i]['likes'], data['posts'][i]['dislikes']);
-				console.log(newPost);
-				loadedPosts.unshift(newPost);
+				loadedPosts.unshift({id:data['posts'][i]['id'], body:data['posts'][i]['body'], 
+									likes:data['posts'][i]['likes'], dislikes:data['posts'][i]['dislikes']});
 			}
 			console.log(loadedPosts);
 			this.setState({posts: loadedPosts});
@@ -65,8 +58,20 @@ class AllPosts extends Component {
 		event.preventDefault();
 	}
 	
-	handleClick(message) {
-		console.log(message);
+	handleClick(message, postId) {
+		var i;
+		for (i = 0; i < this.state.posts.length; i++) {
+			if (this.state.posts[i].id === postId) {
+				break;
+			}
+		}
+		var nPosts = this.state.posts;
+		if (message === "Like") {
+			nPosts[i].likes++;
+		} else if (message === "Dislike") {
+			nPosts[i].dislikes++;
+		}
+		this.setState({nPosts})
 	}
 	
 	render() {
@@ -85,9 +90,9 @@ class AllPosts extends Component {
 					{this.state.posts.map(post => 
 					<div className="post">{post.body}
 						<div>
-							<button className="btn" onClick={()=>this.handleClick("Like")}>Like ({post.likes})</button>
-							<button className="btn" onClick={()=>this.handleClick("Dislike")}>Dislike ({post.dislikes})</button>
-							<button className="btn" onClick={()=>this.handleClick("Comments")}>Comments</button>
+							<button className="btn" onClick={()=>this.handleClick("Like", post.id)}>Like ({post.likes})</button>
+							<button className="btn" onClick={()=>this.handleClick("Dislike", post.id)}>Dislike ({post.dislikes})</button>
+							<button className="btn" onClick={()=>this.handleClick("Comments", post.id)}>Comments</button>
 						</div>
 					</div>)}
 				</div>
@@ -100,7 +105,9 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <h1>Welcome to Chatter</h1>
+				<div className="header">
+					<h1>Welcome to Chatter</h1>
+				</div>
 				<div>
 					<AllPosts />
 				</div>
