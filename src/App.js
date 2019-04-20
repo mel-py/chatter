@@ -58,7 +58,7 @@ class AllPosts extends Component {
 		event.preventDefault();
 	}
 	
-	handleClick(message, postId) {
+	handleClickLiked(postId) {
 		var i;
 		for (i = 0; i < this.state.posts.length; i++) {
 			if (this.state.posts[i].id === postId) {
@@ -66,11 +66,10 @@ class AllPosts extends Component {
 			}
 		}
 		var nPosts = this.state.posts;
-		if (message === "Like") {
-			nPosts[i].likes++;
-		} else if (message === "Dislike") {
-			nPosts[i].dislikes++;
-		}
+		this.setState({
+			isButtonDisabled: true
+		});
+		nPosts[i].likes++;
 		this.setState({nPosts});
 		var xhttp = new XMLHttpRequest();
 		xhttp.open("PUT", "http://localhost:5000/chatter/api/v1.0/posts/"+postId, true);
@@ -83,6 +82,36 @@ class AllPosts extends Component {
 		});
 		console.log(input);
 		xhttp.send(input);
+	}
+	
+	handleClickDisliked(postId) {
+			var i;
+		for (i = 0; i < this.state.posts.length; i++) {
+			if (this.state.posts[i].id === postId) {
+				break;
+			}
+		}
+		var nPosts = this.state.posts;
+		this.setState({
+			isButtonDisabled: true
+		});
+		nPosts[i].dislikes++;
+		this.setState({nPosts});
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("PUT", "http://localhost:5000/chatter/api/v1.0/posts/"+postId, true);
+		xhttp.setRequestHeader('Content-Type', 'application/json');
+		var input = JSON.stringify({
+			"id" : this.state.posts[i].id,
+			"body" : this.state.posts[i].body,
+			"likes" : this.state.posts[i].likes,
+			"dislikes" : this.state.posts[i].dislikes,
+		});
+		console.log(input);
+		xhttp.send(input);
+	}
+	
+	handleClickComments(postId) {
+		
 	}
 	
 	render() {
@@ -101,9 +130,9 @@ class AllPosts extends Component {
 					{this.state.posts.map(post => 
 					<div className="post">{post.body}
 						<div>
-							<button className="btn" onClick={()=>this.handleClick("Like", post.id)}>Like ({post.likes})</button>
-							<button className="btn" onClick={()=>this.handleClick("Dislike", post.id)}>Dislike ({post.dislikes})</button>
-							<button className="btn" onClick={()=>this.handleClick("Comments", post.id)}>Comments</button>
+							<button className="btn" onClick={()=>this.handleClickLiked(post.id)} disabled={this.state.isButtonDisabled}>Like ({post.likes})</button>
+							<button className="btn" onClick={()=>this.handleClickDisliked(post.id)} disabled={this.state.isButtonDisabled}>Dislike ({post.dislikes})</button>
+							<button className="btn" onClick={()=>this.handleClick(post.id)}>Comments</button>
 						</div>
 					</div>)}
 				</div>
